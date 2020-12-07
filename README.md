@@ -36,14 +36,14 @@ utility-cpp11 depends on the C++ standard library only. (I use [catch2](https://
 |---|---|---|
 | swap | C++11 | Not needed. |
 | forward | C++11 | Not needed. |
-| move<bt />move_if_noexcept | C++11 | Not needed. |
-| exchange | C++14 | ✅ |
-| as_const | C++17 | ✅ |
+| move<br />move_if_noexcept | C++11 | Not needed. |
+| exchange | C++14 | ✓ |
+| as_const | C++17 | ✓ |
 | declval | C++11 | Not needed. |
-| cmp_equal<bt />cmp_not_equal<bt />cmp_less<bt />cmp_greater<bt />cmp_less_equal<bt />cmp_greater_equal | C++20 | ✅ |
-| in_range | C++20 | ✅ |
-| integer_sequence<bt />index_sequence<bt />make_integer_sequence<bt />make_index_sequence<bt />index_sequence_for | C++14 | ✅ |
-| pair<bt />make_pair | C++11 | Not needed. |
+| cmp_equal<br />cmp_not_equal<br />cmp_less<br />cmp_greater<br />cmp_less_equal<br />cmp_greater_equal | C++20 | ✓ |
+| in_range | C++20 | ✓ |
+| integer_sequence<br />index_sequence<br />make_integer_sequence<br />make_index_sequence<br />index_sequence_for | C++14 | ✓ |
+| pair<br />make_pair | C++11 | Not needed. |
 | piecewise_construct | C++11 | Not needed. |
 | in_place | C++17 | Not planned. |
 | rel_ops operators | Deprecated in C++20 | Not planned. |
