@@ -1,0 +1,8 @@
+#!/bin/bash -eu
+
+make TOOLCHAIN=gcc STDCXX=11
+make TOOLCHAIN=gcc STDCXX=14
+make TOOLCHAIN=gcc STDCXX=17
+make TOOLCHAIN=clang STDCXX=11
+make TOOLCHAIN=clang STDCXX=14
+make TOOLCHAIN=clang STDCXX=17
