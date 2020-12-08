@@ -31,10 +31,23 @@
 #define utility_cpp11_CPP17_OR_LATER (utility_cpp11_CPLUSPLUS >= 201703L)
 #define utility_cpp11_CPP20_OR_LATER (utility_cpp11_CPLUSPLUS >= 202002L)
 
+// Visual Studio 2015 says it supports C++14, but does not implement the C++14 constexpr extension.
 #if utility_cpp11_CPP14_OR_LATER
-#define utility_cpp11_CONSTEXPR14 constexpr
+#   if defined(_MSC_VER) && _MSC_VER >= 1915 // Boost says msvc was supported with _MSC_VER >= 1915.
+#       define utility_cpp11_HAS_CONSTEXPR14 1
+#   elif defined(_MSC_VER) && _MSC_VER == 1900
+#       define utility_cpp11_HAS_CONSTEXPR14 0
+#   else
+#       define utility_cpp11_HAS_CONSTEXPR14 1
+#   endif
 #else
-#define utility_cpp11_CONSTEXPR14 /*constexpr*/
+#   define utility_cpp11_HAS_CONSTEXPR14 0
+#endif
+
+#if utility_cpp11_HAS_CONSTEXPR14
+#   define utility_cpp11_CONSTEXPR14 constexpr
+#else
+#   define utility_cpp11_CONSTEXPR14 /*constexpr*/
 #endif
 
 #include <utility>

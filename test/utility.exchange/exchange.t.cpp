@@ -10,7 +10,7 @@
 
 #include <catch2/catch.hpp>
 
-#if utility_cpp11_CPP14_OR_LATER
+#if utility_cpp11_HAS_CONSTEXPR14
 constexpr bool test_constexpr() {
     int v = 12;
 
@@ -66,7 +66,7 @@ TEST_CASE("utility.exchange/exchange")
     REQUIRE ( s3.size () == 0 );
     }
 
-#if utility_cpp11_CPP14_OR_LATER
+#if utility_cpp11_HAS_CONSTEXPR14
     STATIC_REQUIRE(test_constexpr());
 #endif
 }
