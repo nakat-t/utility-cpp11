@@ -1,0 +1,58 @@
+name: CMake and CTest CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  linux-gcc-build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: 'true'
+    - name: Show version
+      run: |
+        cmake --version
+        g++ -v
+    - name: Build
+      run: make DEBUG=0 STDCXX=11 TOOLCHAIN=gcc build
+    - name: Test
+      run: make DEBUG=0 STDCXX=11 TOOLCHAIN=gcc test
+  linux-clang-build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: 'true'
+    - name: Show version
+      run: |
+        cmake --version
+        clang++ -v
+    - name: Build
+      run: make DEBUG=0 STDCXX=11 TOOLCHAIN=clang build
+    - name: Test
+      run: make DEBUG=0 STDCXX=11 TOOLCHAIN=clang test
+  windows-msvc-build:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: 'true'
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
+    - name: Show version
+      run: |
+        cmake --version
+        cl.exe
+    - name: Build
+      run: make DEBUG=0 STDCXX=11 TOOLCHAIN=msvc142 build
+    - name: Test
+      run: make DEBUG=0 STDCXX=11 TOOLCHAIN=msvc142 test
