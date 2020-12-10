@@ -36,6 +36,8 @@ ifeq ($(TOOLCHAIN),gcc)
     cmake_options += -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
 else ifeq ($(TOOLCHAIN),clang)
 	cmake_options += -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_CXX_FLAGS=-stdlib=libc++ -DCMAKE_EXE_LINKER_FLAGS=-stdlib=libc++
+else ifeq ($(TOOLCHAIN),clang-libstdc++)
+	cmake_options += -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
 else ifeq ($(TOOLCHAIN),msvc14)
 	cmake_options += -G "Visual Studio 14 2015" -A x64
 else ifeq ($(TOOLCHAIN),msvc141)
