@@ -31,6 +31,9 @@
 #define utility_cpp11_CPP17_OR_LATER (utility_cpp11_CPLUSPLUS >= 201703L)
 #define utility_cpp11_CPP20_OR_LATER (utility_cpp11_CPLUSPLUS >= 202002L)
 
+#include <cstddef>
+#include <utility>
+
 // Visual Studio 2015 says it supports C++14, but does not implement the C++14 constexpr extension.
 #if utility_cpp11_CPP14_OR_LATER
 #   if defined(_MSC_VER) && _MSC_VER >= 1915 // Boost says msvc was supported with _MSC_VER >= 1915.
@@ -50,28 +53,26 @@
 #   define utility_cpp11_CONSTEXPR14 /*constexpr*/
 #endif
 
-#include <utility>
-
-#if defined(__cpp_lib_exchange_function) || utility_cpp11_CPP14_OR_LATER
+#if defined(__cpp_lib_exchange_function)
 #   define utility_cpp11_HAS_EXCHANGE_FUNCTION 1
 #else
 #   define utility_cpp11_HAS_EXCHANGE_FUNCTION 0
 #endif
 
-#if defined(__cpp_lib_constexpr_utility) || utility_cpp11_CPP20_OR_LATER
+#if defined(__cpp_lib_constexpr_utility)
 #   define utility_cpp11_HAS_CONSTEXPR_UTILITY 1
 #else
 #   define utility_cpp11_HAS_CONSTEXPR_UTILITY 0
 #endif
 
-#if defined(__cpp_lib_as_const) || utility_cpp11_CPP17_OR_LATER
+#if defined(__cpp_lib_as_const)
 #   define utility_cpp11_HAS_AS_CONST 1
 #else
 #   define utility_cpp11_HAS_AS_CONST 0
 #   include <type_traits>
 #endif
 
-#if defined(__cpp_lib_integer_comparison_functions) || utility_cpp11_CPP20_OR_LATER
+#if defined(__cpp_lib_integer_comparison_functions)
 #   define utility_cpp11_HAS_INTEGER_COMPARISON_FUNCTIONS 1
 #else
 #   define utility_cpp11_HAS_INTEGER_COMPARISON_FUNCTIONS 0
@@ -79,7 +80,7 @@
 #   include <type_traits>
 #endif
 
-#if defined(__cpp_lib_integer_sequence) || utility_cpp11_CPP14_OR_LATER
+#if defined(__cpp_lib_integer_sequence)
 #   define utility_cpp11_HAS_INTEGER_SEQUENCE 1
 #else
 #   define utility_cpp11_HAS_INTEGER_SEQUENCE 0
