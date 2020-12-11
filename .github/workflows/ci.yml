@@ -1,4 +1,4 @@
-name: CMake and CTest CI
+name: test
 
 on:
   push:
@@ -9,38 +9,50 @@ on:
       - main
 
 jobs:
-  linux-gcc-build:
+  gcc-build-and-test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        gcc: [4.9, 5, 7, 9, 10]
+        std: [11, 14, 17]
+        exclude:
+          - gcc: 4.9
+            std: 17
+        include:
+          - gcc: 9
+            std: 20
+          - gcc: 10
+            std: 20
     steps:
     - name: Checkout
       uses: actions/checkout@v2
       with:
         submodules: 'true'
-    - name: Show version
-      run: |
-        cmake --version
-        g++ -v
-    - name: Build
-      run: make DEBUG=0 STDCXX=11 TOOLCHAIN=gcc build
     - name: Test
-      run: make DEBUG=0 STDCXX=11 TOOLCHAIN=gcc test
-  linux-clang-build:
+      run: docker run --rm -u $(id -u):$(id -g) -v $PWD:/data nakatt/gcc:${{ matrix.gcc }} make DEBUG=0 STDCXX=${{ matrix.std }} TOOLCHAIN=gcc test
+
+  clang-build-and-test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        clang: [7, 11]
+        std: [11, 14, 17]
+        include:
+          - clang: 11
+            std: 20
     steps:
     - name: Checkout
       uses: actions/checkout@v2
       with:
         submodules: 'true'
-    - name: Show version
-      run: |
-        cmake --version
-        clang++ -v
-    - name: Build
-      run: make DEBUG=0 STDCXX=11 TOOLCHAIN=clang build
     - name: Test
-      run: make DEBUG=0 STDCXX=11 TOOLCHAIN=clang test
+      run: docker run --rm -u $(id -u):$(id -g) -v $PWD:/data nakatt/clang:${{ matrix.clang }} make DEBUG=0 STDCXX=${{ matrix.std }} TOOLCHAIN=clang test
+
   windows-msvc-build:
     runs-on: windows-latest
+    strategy:
+      matrix:
+        std: [11, 14, 17]
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -48,11 +60,8 @@ jobs:
         submodules: 'true'
     - name: Add cl.exe to PATH
       uses: seanmiddleditch/gha-setup-vsdevenv@v3
-    - name: Show version
-      run: |
-        cmake --version
-        cl.exe
-    - name: Build
-      run: make DEBUG=0 STDCXX=11 TOOLCHAIN=msvc142 build
     - name: Test
-      run: make DEBUG=0 STDCXX=11 TOOLCHAIN=msvc142 test
+      run: |
+        make DEBUG=0 STDCXX=${{ matrix.std }} TOOLCHAIN=msvc14 test
+        make DEBUG=0 STDCXX=${{ matrix.std }} TOOLCHAIN=msvc141 test
+        make DEBUG=0 STDCXX=${{ matrix.std }} TOOLCHAIN=msvc142 test
