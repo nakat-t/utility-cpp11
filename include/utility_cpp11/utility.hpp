@@ -4,7 +4,7 @@
 #define utility_cpp11_UTILITY_HPP_
 
 #define utility_cpp11_VERSION_MAJOR 0
-#define utility_cpp11_VERSION_MINOR 1
+#define utility_cpp11_VERSION_MINOR 2
 #define utility_cpp11_VERSION_PATCH 0
 
 #define utility_cpp11_STR(v) #v
@@ -53,6 +53,12 @@
 #   define utility_cpp11_CONSTEXPR14 /*constexpr*/
 #endif
 
+#if defined(__cpp_inline_variables)
+#   define utility_cpp11_HAS_INLINE_VARIABLES 1
+#else
+#   define utility_cpp11_HAS_INLINE_VARIABLES 0
+#endif
+
 #if defined(__cpp_lib_exchange_function)
 #   define utility_cpp11_HAS_EXCHANGE_FUNCTION 1
 #else
@@ -86,6 +92,13 @@
 #   define utility_cpp11_HAS_INTEGER_SEQUENCE 0
 #   include <cstddef>
 #   include <type_traits>
+#endif
+
+#if utility_cpp11_CPP17_OR_LATER
+#   define utility_cpp11_HAS_IN_PLACE 1
+#else
+#   define utility_cpp11_HAS_IN_PLACE 0
+#   include <cstddef>
 #endif
 
 namespace utility_cpp11 {
@@ -317,6 +330,42 @@ using index_sequence_for = make_index_sequence<sizeof...(T)>;
 
 #endif // utility_cpp11_HAS_INTEGER_SEQUENCE
 
+// in-place construction
+#if utility_cpp11_HAS_IN_PLACE
+
+using std::in_place;
+using std::in_place_type;
+using std::in_place_index;
+using std::in_place_t;
+using std::in_place_type_t;
+using std::in_place_index_t;
+
+#define utility_cpp11_in_place          (std::in_place)
+#define utility_cpp11_in_place_type(T)  (std::in_place_type<T>)
+#define utility_cpp11_in_place_index(I) (std::in_place_index<I>)
+
+#else // utility_cpp11_HAS_IN_PLACE
+
+struct in_place_t {
+    explicit in_place_t() = default;
+};
+
+template <typename T>
+struct in_place_type_t {
+    explicit in_place_type_t() = default;
+};
+
+template <std::size_t I>
+struct in_place_index_t {
+    explicit in_place_index_t() = default;
+};
+
+#define utility_cpp11_in_place          (utility_cpp11::in_place_t{})
+#define utility_cpp11_in_place_type(T)  (utility_cpp11::in_place_type_t<T>{})
+#define utility_cpp11_in_place_index(I) (utility_cpp11::in_place_index_t<I>{})
+
+#endif // utility_cpp11_HAS_IN_PLACE
+
 } // namespace utility_cpp11
 
 #if utility_cpp11_CPP11_OR_LATER
@@ -336,6 +385,18 @@ using utility_cpp11::index_sequence;
 using utility_cpp11::make_integer_sequence;
 using utility_cpp11::make_index_sequence;
 using utility_cpp11::index_sequence_for;
+#if utility_cpp11_HAS_INLINE_VARIABLES
+using utility_cpp11::in_place;
+using utility_cpp11::in_place_type;
+using utility_cpp11::in_place_index;
+#endif // utility_cpp11_HAS_INLINE_VARIABLES
+using utility_cpp11::in_place_t;
+using utility_cpp11::in_place_type_t;
+using utility_cpp11::in_place_index_t;
+
+#define bp11_in_place          utility_cpp11_in_place
+#define bp11_in_place_type(T)  utility_cpp11_in_place_type(T)
+#define bp11_in_place_index(I) utility_cpp11_in_place_index(I)
 
 } // namespace bp11
 #endif // utility_cpp11_CPP11_OR_LATER
