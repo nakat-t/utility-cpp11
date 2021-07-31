@@ -47,7 +47,7 @@ utility-cpp11 depends on the C++ standard library only. (I use [catch2](https://
 | integer_sequence<br />index_sequence<br />make_integer_sequence<br />make_index_sequence<br />index_sequence_for | C++14 | ✓ |
 | pair<br />make_pair | C++11 | Available in `std` |
 | piecewise_construct | C++11 | Available in `std` |
-| in_place | C++17 | No |
+| in_place | C++17 | ✓ |
 | rel_ops operators | Deprecated in C++20 | No |
 
 ## Test
